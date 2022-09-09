@@ -7,9 +7,9 @@ buildscript {
         app_id = "g.sig.trackr"
 
         coroutines_version = "1.6.4"
-        compose_version = "1.3.0-beta01"
-        android_core_version = "1.8.0"
-        material_version = "1.0.0-beta01"
+        compose_version = "1.3.0-beta02"
+        android_core_version = "1.9.0"
+        material_version = "1.0.0-beta02"
         lifecycle_version = "2.5.1"
         activity_compose_version = "1.5.1"
         junit_version = "4.13.2"

@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "TrackR"
 include ':app'
 include ':app:core-data'
+include ':app:core-ui'

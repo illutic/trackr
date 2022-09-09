@@ -1,7 +1,8 @@
-package g.sig.core_data
+package g.sig.core_ui
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
+
+import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

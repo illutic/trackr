@@ -29,10 +29,17 @@ android {
 }
 
 dependencies {
-    def room_version = "2.4.3"
+    project(":app:core-data")
 
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    testImplementation "androidx.room:room-testing:$room_version"
+    // compose & material
+    api "androidx.core:core-ktx:$android_core_version"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    api "androidx.activity:activity-compose:$activity_compose_version"
+    api "androidx.compose.ui:ui:$compose_version"
+    api "androidx.compose.material3:material3:$material_version"
+    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugApi "androidx.compose.ui:ui-tooling:$compose_version"
+    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
+
 }

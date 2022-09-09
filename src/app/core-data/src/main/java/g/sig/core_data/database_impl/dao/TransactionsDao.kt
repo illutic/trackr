@@ -11,6 +11,6 @@ interface TransactionsDao {
     suspend fun setTransaction(loggedTransaction: LoggedTransaction): Flow<Int>
 
     @Delete
-    suspend fun deleteTransaction(loggedTransaction: LoggedTransaction)
+    suspend fun deleteTransaction(loggedTransaction: LoggedTransaction): Flow<Int>
 
 }

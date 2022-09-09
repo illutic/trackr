@@ -15,7 +15,7 @@ interface CategoryDao {
     suspend fun getCategories(): Flow<List<Category>>
 
     @Delete
-    suspend fun deleteCategory(category: Category)
+    suspend fun deleteCategory(category: Category): Flow<Int>
 
     @Transaction
     @Query("SELECT * FROM Category")

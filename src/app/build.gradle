@@ -46,17 +46,11 @@ android {
 }
 
 dependencies {
+    project(":app:core-ui")
+    project(":app:core-data")
 
-    implementation "androidx.core:core-ktx:$android_core_version"
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material3:material3:$material_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
+    // testing
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }
