@@ -1,13 +1,13 @@
 package g.sig.core_data
 
-import g.sig.core_data.database_impl.models.transaction.CategoryDb
-import g.sig.core_data.database_impl.models.transaction.LoggedTransactionDb
-import g.sig.core_data.database_impl.models.user.UserSettingsDb
+import g.sig.core_data.models.transaction.Category
+import g.sig.core_data.models.transaction.LoggedTransaction
+import g.sig.core_data.models.user.UserSettings
 import kotlinx.coroutines.flow.Flow
 
 sealed interface DataInterface {
     interface UserInterface : DataInterface {
-        suspend fun setUserSettings(userSettings: UserSettingsDb): Flow<DataResponse>
+        suspend fun setUserSettings(userSettings: UserSettings): Flow<DataResponse>
         suspend fun getUserSettings(): Flow<DataResponse>
     }
 
@@ -19,14 +19,14 @@ sealed interface DataInterface {
     }
 
     interface TransactionInterface : DataInterface {
-        suspend fun setTransaction(loggedTransaction: LoggedTransactionDb): Flow<DataResponse>
-        suspend fun deleteTransaction(loggedTransaction: LoggedTransactionDb): Flow<DataResponse>
+        suspend fun setTransaction(loggedTransaction: LoggedTransaction): Flow<DataResponse>
+        suspend fun deleteTransaction(loggedTransaction: LoggedTransaction): Flow<DataResponse>
     }
 
     interface CategoryInterface : DataInterface {
-        suspend fun setCategory(category: CategoryDb): Flow<DataResponse>
+        suspend fun setCategory(category: Category): Flow<DataResponse>
         suspend fun getCategories(): Flow<DataResponse>
         suspend fun getCategoryTransactions(categoryId: Int): Flow<DataResponse>
-        suspend fun deleteCategory(category: CategoryDb): Flow<DataResponse>
+        suspend fun deleteCategory(category: Category): Flow<DataResponse>
     }
 }

@@ -1,23 +1,22 @@
 package g.sig.core_data.database_impl.dao
 
 import androidx.room.*
-import g.sig.core_data.DataResponse
-import g.sig.core_data.DataInterface
+import g.sig.core_data.models.transaction.MonthCategories
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MonthDao : DataInterface.MonthInterface {
+interface MonthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override suspend fun setBudget(amount: Double): Flow<DataResponse>
+    suspend fun setBudget(amount: Double): Flow<Int>
 
-    @Query("SELECT budget FROM MonthDb")
-    override suspend fun getBudget(): Flow<DataResponse>
+    @Query("SELECT budget FROM Month")
+    suspend fun getBudget(): Flow<Double>
 
-    @Query("SELECT expenses FROM MonthDb")
-    override suspend fun getExpenses(): Flow<DataResponse>
+    @Query("SELECT expenses FROM Month")
+    suspend fun getExpenses(): Flow<Double>
 
     @Transaction
-    @Query("SELECT * FROM MonthDb WHERE monthId = :monthId")
-    override suspend fun getCategories(monthId: Int): Flow<DataResponse>
+    @Query("SELECT * FROM Month WHERE monthId = :monthId")
+    suspend fun getCategories(monthId: Int): Flow<MonthCategories>
 }

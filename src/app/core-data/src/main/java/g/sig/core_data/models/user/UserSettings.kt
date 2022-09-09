@@ -1,7 +1,12 @@
 package g.sig.core_data.models.user
 
-interface UserSettings {
-    val userSettingsId: Int
-    val userId: Int
-    val currency: Currency
-}
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class UserSettings(
+    @PrimaryKey(autoGenerate = true) val userSettingsId: Int,
+    val userId: Int,
+    @Embedded val currency: Currency
+)

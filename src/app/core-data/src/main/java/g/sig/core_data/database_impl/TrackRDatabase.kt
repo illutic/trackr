@@ -8,23 +8,23 @@ import g.sig.core_data.database_impl.dao.CategoryDao
 import g.sig.core_data.database_impl.dao.MonthDao
 import g.sig.core_data.database_impl.dao.TransactionsDao
 import g.sig.core_data.database_impl.dao.UserDao
-import g.sig.core_data.database_impl.models.transaction.CategoryDb
-import g.sig.core_data.database_impl.models.transaction.LoggedTransactionDb
-import g.sig.core_data.database_impl.models.transaction.MonthCategoriesCrossRef
-import g.sig.core_data.database_impl.models.transaction.MonthDb
-import g.sig.core_data.database_impl.models.user.CurrencyDb
-import g.sig.core_data.database_impl.models.user.UserDb
-import g.sig.core_data.database_impl.models.user.UserSettingsDb
+import g.sig.core_data.models.transaction.Category
+import g.sig.core_data.models.transaction.LoggedTransaction
+import g.sig.core_data.models.transaction.Month
+import g.sig.core_data.models.transaction.MonthCategoriesCrossRef
+import g.sig.core_data.models.user.Currency
+import g.sig.core_data.models.user.User
+import g.sig.core_data.models.user.UserSettings
 
 @Database(
     entities = [
-        CategoryDb::class,
-        MonthDb::class,
+        Category::class,
+        Month::class,
         MonthCategoriesCrossRef::class,
-        LoggedTransactionDb::class,
-        CurrencyDb::class,
-        UserDb::class,
-        UserSettingsDb::class
+        LoggedTransaction::class,
+        Currency::class,
+        User::class,
+        UserSettings::class
     ],
     version = 1
 )

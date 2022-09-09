@@ -1,25 +1,24 @@
 package g.sig.core_data.database_impl.dao
 
 import androidx.room.*
-import g.sig.core_data.DataResponse
-import g.sig.core_data.DataInterface
-import g.sig.core_data.database_impl.models.transaction.CategoryDb
+import g.sig.core_data.models.transaction.Category
+import g.sig.core_data.models.transaction.CategoryTransactions
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CategoryDao : DataInterface.CategoryInterface {
+interface CategoryDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override suspend fun setCategory(category: CategoryDb): Flow<DataResponse>
+    suspend fun setCategory(category: Category): Flow<Int>
 
-    @Query("SELECT * FROM CategoryDb")
-    override suspend fun getCategories(): Flow<DataResponse>
+    @Query("SELECT * FROM Category")
+    suspend fun getCategories(): Flow<List<Category>>
 
     @Delete
-    override suspend fun deleteCategory(category: CategoryDb): Flow<DataResponse>
+    suspend fun deleteCategory(category: Category)
 
     @Transaction
-    @Query("SELECT * FROM CategoryDb")
-    override suspend fun getCategoryTransactions(categoryId: Int): Flow<DataResponse>
+    @Query("SELECT * FROM Category")
+    suspend fun getCategoryTransactions(categoryId: Int): Flow<CategoryTransactions>
 
 }
