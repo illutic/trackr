@@ -1,6 +1,6 @@
 plugins {
-    id "com.android.library"
-    id "org.jetbrains.kotlin.android"
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -26,26 +26,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         compose true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion compose_compiler
     }
 }
 
 dependencies {
-    project(":app:core-data")
-
-    // compose & material
-    api "androidx.core:core-ktx:$android_core_version"
-    api "androidx.activity:activity-compose:$activity_compose_version"
-    api "androidx.compose.ui:ui:$compose_version"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    api "androidx.compose.material3:material3:$material_version"
-    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugApi "androidx.compose.ui:ui-tooling:$compose_version"
-    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
-
+    implementation project(":app:core-navigation")
+    implementation project(":app:core-ui")
+    implementation project(":app:core-data")
 }

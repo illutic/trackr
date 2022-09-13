@@ -36,7 +36,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion compose_compiler
     }
     packagingOptions {
         resources {
@@ -46,9 +46,10 @@ android {
 }
 
 dependencies {
-    project(":app:core-ui")
-    project(":app:core-data")
-
+    implementation project(":app:core-ui")
+    implementation project(":app:core-data")
+    implementation project(":app:core-navigation")
+    implementation project(":app:feature-overview")
     // testing
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"

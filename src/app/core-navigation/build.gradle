@@ -26,6 +26,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         compose true
     }
@@ -35,17 +36,8 @@ android {
 }
 
 dependencies {
-    project(":app:core-data")
+    implementation project(":app:core-ui")
+    def nav_version = "2.5.2"
 
-    // compose & material
-    api "androidx.core:core-ktx:$android_core_version"
-    api "androidx.activity:activity-compose:$activity_compose_version"
-    api "androidx.compose.ui:ui:$compose_version"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    api "androidx.compose.material3:material3:$material_version"
-    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugApi "androidx.compose.ui:ui-tooling:$compose_version"
-    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
-
+    api "androidx.navigation:navigation-compose:$nav_version"
 }
