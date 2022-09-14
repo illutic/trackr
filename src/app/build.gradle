@@ -46,10 +46,13 @@ android {
 }
 
 dependencies {
-    implementation project(":app:core-ui")
-    implementation project(":app:core-data")
-    implementation project(":app:core-navigation")
-    implementation project(":app:feature-overview")
+    implementation project(":app:core:ui")
+    implementation project(":app:core:data")
+    implementation project(":app:core:navigation")
+    implementation project(":app:feature:overview")
+    implementation project(":app:feature:transactions")
+    implementation project(":app:feature:settings")
+
     // testing
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"

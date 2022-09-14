@@ -1,8 +1,6 @@
 package g.sig.trackr.navigation
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,10 +12,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import g.sig.core_navigation.TopLevelRoute
 import g.sig.core_ui.DrawableResIcon
 import g.sig.core_ui.ImageVectorIcon
+import g.sig.core_ui.theme.AppTheme
 import g.sig.trackr.core.rememberAppState
-import g.sig.trackr.ui.theme.AppTheme
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TrackRBottomAppBar(
     modifier: Modifier = Modifier,
@@ -41,22 +38,19 @@ fun TrackRBottomAppBar(
                         } else {
                             destination.unselectedIcon
                         }
-
-                        AnimatedContent(targetState = isSelected) {
-                            when (icon) {
-                                is DrawableResIcon ->
-                                    Icon(
-                                        painter = painterResource(icon.id),
-                                        contentDescription = stringResource(
-                                            id = destination.titleRes
-                                        )
+                        when (icon) {
+                            is DrawableResIcon ->
+                                Icon(
+                                    painter = painterResource(icon.id),
+                                    contentDescription = stringResource(
+                                        id = destination.titleRes
                                     )
-                                is ImageVectorIcon ->
-                                    Icon(
-                                        imageVector = icon.vector,
-                                        contentDescription = stringResource(id = destination.titleRes)
-                                    )
-                            }
+                                )
+                            is ImageVectorIcon ->
+                                Icon(
+                                    imageVector = icon.vector,
+                                    contentDescription = stringResource(id = destination.titleRes)
+                                )
                         }
                     },
                     alwaysShowLabel = false,

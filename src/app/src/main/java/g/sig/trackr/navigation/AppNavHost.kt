@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import g.sig.core_navigation.Routes
 import g.sig.feature_overview.overviewGraph
+import g.sig.settings.settingsGraph
+import g.sig.transactions.transactionsGraph
 
 @Composable
 fun AppNavHost(
@@ -19,5 +21,7 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
         overviewGraph()
+        transactionsGraph()
+        settingsGraph()
     }
 }
