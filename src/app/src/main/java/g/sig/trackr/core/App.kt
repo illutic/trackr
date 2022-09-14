@@ -14,9 +14,7 @@ import g.sig.trackr.navigation.TrackRBottomAppBar
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun App() {
-    val appState = rememberAppState()
-
+fun App(appState: AppState = rememberAppState()) {
     Scaffold(
         bottomBar = {
             TrackRBottomAppBar(

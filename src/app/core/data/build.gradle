@@ -30,7 +30,9 @@ android {
 
 dependencies {
     def room_version = "2.4.3"
+    def crypto = "1.0.0"
 
+    api "androidx.security:security-crypto:$crypto"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"

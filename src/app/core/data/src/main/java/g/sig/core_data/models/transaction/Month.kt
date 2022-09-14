@@ -1,12 +1,14 @@
 package g.sig.core_data.models.transaction
 
 import androidx.room.*
+import java.time.Instant
 
 @Entity
 data class Month(
     @PrimaryKey(autoGenerate = true) val monthId: Int,
     val budget: Double = 0.0,
-    val expenses: Double = 0.0
+    val expenses: Double = 0.0,
+    val date: Instant
 )
 
 @Entity(primaryKeys = ["monthId", "categoryId"])

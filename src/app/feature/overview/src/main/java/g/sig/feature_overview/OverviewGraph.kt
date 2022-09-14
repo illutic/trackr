@@ -6,6 +6,6 @@ import g.sig.core_navigation.Routes
 
 fun NavGraphBuilder.overviewGraph() {
     composable(Routes.Overview.destination) {
-        OverviewScreen()
+        OverviewRoute()
     }
 }
