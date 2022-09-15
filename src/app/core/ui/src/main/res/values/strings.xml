@@ -2,5 +2,9 @@
     <string name="app_name">TrackR</string>
     <string name="overview">Overview</string>
     <string name="transactions">Transactions</string>
+
+    <!--Settings-->
     <string name="settings">Settings</string>
+    <string name="material_you_title">Material You</string>
+    <string name="material_you_message">Theme the app based on your wallpaper</string>
 </resources>

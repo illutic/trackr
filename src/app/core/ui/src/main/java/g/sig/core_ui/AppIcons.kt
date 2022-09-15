@@ -15,6 +15,7 @@ object AppIcons {
     val outlinedPaid = R.drawable.outline_paid_24
     val filledSettings = Icons.Filled.Settings
     val outlinedSettings = Icons.Outlined.Settings
+    val logo = R.drawable.ic_logo
 }
 
 sealed interface AppIcon

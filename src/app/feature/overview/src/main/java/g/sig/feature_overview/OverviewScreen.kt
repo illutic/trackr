@@ -29,9 +29,11 @@ fun OverviewRoute() {
 fun OverviewScreen(overviewState: OverviewState) {
     Scaffold(
         topBar = { NoNavIconAppBar(stringResource(R.string.overview)) }) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(it)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
             when (overviewState) {
                 is OverviewState.OverviewLoading -> {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
