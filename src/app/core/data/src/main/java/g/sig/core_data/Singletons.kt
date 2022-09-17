@@ -8,9 +8,6 @@ object Singletons {
     private var database: TrackRDatabase? = null
 
     fun getDatabase(context: Context): TrackRDatabase {
-        return database ?: buildDatabase(context)
-            .also {
-                database = it
-            }
+        return database ?: buildDatabase(context).also { database = it }
     }
 }

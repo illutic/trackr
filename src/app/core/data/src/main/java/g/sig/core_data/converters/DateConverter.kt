@@ -5,7 +5,6 @@ import java.time.Instant
 import java.time.format.DateTimeParseException
 
 class DateConverter {
-
     @TypeConverter
     fun fromTimestamp(value: String?): Instant? = try {
         Instant.parse(value)

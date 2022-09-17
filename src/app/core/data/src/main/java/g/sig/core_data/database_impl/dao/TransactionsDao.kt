@@ -6,11 +6,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionsDao {
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+
+    @Query("SELECT * FROM loggedtransaction WHERE transactionId == :transactionId")
+    suspend fun getTransaction(transactionId: Int): LoggedTransaction?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun setTransaction(loggedTransaction: LoggedTransaction): Flow<Int>
+    suspend fun setTransaction(loggedTransaction: LoggedTransaction)
 
     @Delete
-    suspend fun deleteTransaction(loggedTransaction: LoggedTransaction): Flow<Int>
+    suspend fun deleteTransaction(loggedTransaction: LoggedTransaction): Int?
 
 }

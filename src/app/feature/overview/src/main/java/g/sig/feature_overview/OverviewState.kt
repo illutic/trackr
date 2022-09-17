@@ -1,7 +1,7 @@
 package g.sig.feature_overview
 
+import android.icu.util.Currency
 import g.sig.core_data.models.transaction.MonthCategories
-import g.sig.core_data.models.user.Currency
 
 sealed interface OverviewState {
     data class OverviewSuccess(val monthCategories: MonthCategories, val currency: Currency) :

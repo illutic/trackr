@@ -2,6 +2,7 @@ package g.sig.core_ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.DateRange
@@ -16,6 +17,8 @@ object AppIcons {
     val filledSettings = Icons.Filled.Settings
     val outlinedSettings = Icons.Outlined.Settings
     val logo = R.drawable.ic_logo
+    val logo_mono = R.drawable.ic_logo_mono
+    val chevron_down = Icons.Filled.ArrowDropDown
 }
 
 sealed interface AppIcon

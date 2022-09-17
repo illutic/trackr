@@ -1,5 +1,6 @@
 package g.sig.settings
 
+import android.icu.util.Currency
 import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import g.sig.core_ui.NoNavIconAppBar
 import g.sig.core_ui.R
+import g.sig.core_ui.menus.OutlinedCurrencyDropDown
 import g.sig.core_ui.surfaces.GradientLogo
 import g.sig.core_ui.surfaces.PrimarySwitchSurface
 
@@ -25,31 +27,47 @@ import g.sig.core_ui.surfaces.PrimarySwitchSurface
 fun SettingsRoute() {
     val viewModel: SettingsViewModel = viewModel()
     val state by viewModel.settingsState.collectAsState()
-    SettingsScreen(state, onMaterialYouToggled = viewModel::toggleMaterialYou)
+    SettingsScreen(
+        state,
+        onMaterialYouToggled = viewModel::toggleMaterialYou,
+        onCurrencySelected = viewModel::setUserCurrency
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(settingsState: SettingsState, onMaterialYouToggled: (Boolean) -> Unit) {
+fun SettingsScreen(
+    settingsState: SettingsState,
+    onMaterialYouToggled: (Boolean) -> Unit,
+    onCurrencySelected: (Currency) -> Unit
+) {
     Scaffold(topBar = { NoNavIconAppBar(stringResource(R.string.settings)) }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            if (settingsState is SettingsState.SettingsLoading) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            }
-
-            GradientLogo(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            )
-
             when (settingsState) {
-                is SettingsState.SettingsLoading -> {}
+                is SettingsState.SettingsLoading -> {
+                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
                 is SettingsState.SettingsSuccess -> {
+                    GradientLogo(
+                        materialYou = settingsState.isMaterialYouEnabled,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    )
+
+                    OutlinedCurrencyDropDown(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        label = settingsState.userSettings.currency.currencyCode,
+                        items = settingsState.currencies,
+                        onItemSelected = onCurrencySelected
+                    )
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
                         PrimarySwitchSurface(
                             modifier = Modifier

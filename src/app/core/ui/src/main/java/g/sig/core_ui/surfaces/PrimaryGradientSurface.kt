@@ -41,7 +41,7 @@ fun PrimaryGradientRow(modifier: Modifier = Modifier, content: @Composable () ->
 }
 
 @Composable
-fun GradientLogo(modifier: Modifier = Modifier) {
+fun GradientLogo(modifier: Modifier = Modifier, materialYou: Boolean = false) {
     Row(
         modifier = modifier
             .background(
@@ -56,11 +56,18 @@ fun GradientLogo(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(AppIcons.logo),
-            contentDescription = "logo",
-            tint = Color.Unspecified
-        )
+        if (materialYou) {
+            Icon(
+                painter = painterResource(AppIcons.logo_mono),
+                contentDescription = "logo monochromatic"
+            )
+        } else {
+            Icon(
+                painter = painterResource(AppIcons.logo),
+                contentDescription = "logo",
+                tint = Color.Unspecified
+            )
+        }
         Text(
             modifier = Modifier.padding(16.dp),
             text = stringResource(id = R.string.app_name),

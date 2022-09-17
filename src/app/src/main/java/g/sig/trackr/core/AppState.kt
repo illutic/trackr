@@ -8,6 +8,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import g.sig.core_data.models.user.User
 import g.sig.core_data.shared_prefs.SharedKeys
 import g.sig.core_data.shared_prefs.sharedPrefs
 import g.sig.core_navigation.Navigable
@@ -36,4 +37,10 @@ class AppState(
     fun navigate(route: Navigable) {
         navController.navigate(route.destination)
     }
+}
+
+sealed interface UserState {
+    object UserLoading : UserState
+    data class UserSuccess(val user: User) : UserState
+    data class UserError(val errorMessage: String = "") : UserState
 }

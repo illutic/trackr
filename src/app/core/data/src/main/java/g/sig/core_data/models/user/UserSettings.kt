@@ -1,12 +1,12 @@
 package g.sig.core_data.models.user
 
-import androidx.room.Embedded
+import android.icu.util.Currency
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
 data class UserSettings(
-    @PrimaryKey(autoGenerate = true) val userSettingsId: Int,
+    @PrimaryKey(autoGenerate = true) val userSettingsId: Int = 0,
     val userId: Int,
-    @Embedded val currency: Currency
+    val currency: Currency
 )

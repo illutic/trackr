@@ -3,22 +3,23 @@ package g.sig.core_data.database_impl.dao
 import androidx.room.*
 import g.sig.core_data.models.transaction.Category
 import g.sig.core_data.models.transaction.CategoryTransactions
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao {
-    @Update(onConflict = OnConflictStrategy.REPLACE)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun setCategory(category: Category): Flow<Int>
+    suspend fun setCategory(category: Category)
 
     @Query("SELECT * FROM Category")
-    suspend fun getCategories(): Flow<List<Category>>
+    suspend fun getCategories(): List<Category>?
+
+    @Query("SELECT * FROM Category WHERE categoryId == :categoryId")
+    suspend fun getCategory(categoryId: Int): Category?
 
     @Delete
-    suspend fun deleteCategory(category: Category): Flow<Int>
+    suspend fun deleteCategory(category: Category): Int?
 
     @Transaction
-    @Query("SELECT * FROM Category")
-    suspend fun getCategoryTransactions(categoryId: Int): Flow<CategoryTransactions>
+    @Query("SELECT * FROM Category WHERE categoryId == :categoryId")
+    suspend fun getCategoryTransactions(categoryId: Int): CategoryTransactions?
 
 }

@@ -7,7 +7,7 @@ import androidx.room.Relation
 
 @Entity
 data class User(
-    @PrimaryKey(autoGenerate = true) val userId: Int
+    @PrimaryKey(autoGenerate = true) val userId: Int = 0
 )
 
 data class UserWithSettings(
@@ -16,5 +16,5 @@ data class UserWithSettings(
         parentColumn = "userId",
         entityColumn = "userId"
     )
-    val userSettings: UserSettings
+    val userSettings: UserSettings?
 )
