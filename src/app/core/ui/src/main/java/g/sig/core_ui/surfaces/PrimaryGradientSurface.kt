@@ -3,25 +3,18 @@ package g.sig.core_ui.surfaces
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import g.sig.core_ui.AppIcons
-import g.sig.core_ui.R
+import androidx.compose.ui.tooling.preview.Preview
+import g.sig.core_ui.icons.TrackRLogo
 import g.sig.core_ui.theme.shape16
 
 @Composable
-fun PrimaryGradientRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+@Preview
+fun PrimaryGradientRow(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {
     Row(
         modifier = modifier
             .background(
@@ -41,6 +34,7 @@ fun PrimaryGradientRow(modifier: Modifier = Modifier, content: @Composable () ->
 }
 
 @Composable
+@Preview
 fun GradientLogo(modifier: Modifier = Modifier, materialYou: Boolean = false) {
     Row(
         modifier = modifier
@@ -56,24 +50,6 @@ fun GradientLogo(modifier: Modifier = Modifier, materialYou: Boolean = false) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (materialYou) {
-            Icon(
-                painter = painterResource(AppIcons.logo_mono),
-                contentDescription = "logo monochromatic"
-            )
-        } else {
-            Icon(
-                painter = painterResource(AppIcons.logo),
-                contentDescription = "logo",
-                tint = Color.Unspecified
-            )
-        }
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = stringResource(id = R.string.app_name),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
+        TrackRLogo(isMaterialYou = materialYou)
     }
 }

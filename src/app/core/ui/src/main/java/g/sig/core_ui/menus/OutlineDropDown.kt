@@ -1,9 +1,9 @@
 package g.sig.core_ui.menus
 
-import android.icu.util.Currency
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,14 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import g.sig.core_ui.AppIcons
+import g.sig.core_ui.theme.shape16
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OutlinedCurrencyDropDown(
     modifier: Modifier = Modifier,
-    label: String, items: List<Currency>, onItemSelected: (Currency) -> Unit
+    label: String,
+    items: List<String>,
+    onItemSelected: (String) -> Unit,
+    selectedItem: String
 ) {
     var textfieldSize by remember { mutableStateOf(Size.Zero) }
     val interactionSource = remember { MutableInteractionSource() }
@@ -32,8 +38,10 @@ fun OutlinedCurrencyDropDown(
                 .onGloballyPositioned {
                     textfieldSize = it.size.toSize()
                 },
-            value = label,
             readOnly = true,
+            label = { Text(label, style = MaterialTheme.typography.labelLarge) },
+            shape = shape16,
+            value = selectedItem,
             interactionSource = interactionSource,
             trailingIcon = {
                 Icon(
@@ -44,13 +52,13 @@ fun OutlinedCurrencyDropDown(
             onValueChange = {})
     }
     DropdownMenu(
-        modifier = Modifier.width(with(LocalDensity.current) { textfieldSize.width.toDp() }),
+        offset = DpOffset(16.dp, 16.dp),
         expanded = showMenu,
         onDismissRequest = { showMenu = false }) {
         items.forEach { currency ->
             DropdownMenuItem(text = {
                 Text(
-                    currency.currencyCode,
+                    currency,
                     style = MaterialTheme.typography.labelMedium
                 )
             },

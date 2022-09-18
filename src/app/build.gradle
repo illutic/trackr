@@ -4,6 +4,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+        storeFile file('D:\\AndroidStudioProjects\\trackr\\docs\\app_keystore.jks')
+            storePassword 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCVLNbaLV7Ojm5FNsZf2WBJgy8UjeKJzvM7 SzUsZ0Gb7WsY/vycpAnyMFfSRJlNwPoT3liLRMDM8t9tYD6veBUdhEkH9G+WNXl9 B32BB4fXmgmmOdGuyNICbhQE83Nio4BIgiCd+X7I5C2it8pHieQ8iJv2sq7MhcOm g/vi84WVmMqb/yRQ+bPTXfnmT58xqq3EROlFpCWaK8P311s8CvCaaHrb0w7ZMkVQ Iu22siARYoLOTJwPMPY1qhLbL+T1+DNigo648bNcc66OoyuZkscWUURatOQ2z/Dm l9FbFDzdhHYTMIJiUYfDRLpFS+EymIpQfZHbPmPGm/9apz9AVd8N'
+            keyAlias 'key0'
+            keyPassword 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCVLNbaLV7Ojm5FNsZf2WBJgy8UjeKJzvM7 SzUsZ0Gb7WsY/vycpAnyMFfSRJlNwPoT3liLRMDM8t9tYD6veBUdhEkH9G+WNXl9 B32BB4fXmgmmOdGuyNICbhQE83Nio4BIgiCd+X7I5C2it8pHieQ8iJv2sq7MhcOm g/vi84WVmMqb/yRQ+bPTXfnmT58xqq3EROlFpCWaK8P311s8CvCaaHrb0w7ZMkVQ Iu22siARYoLOTJwPMPY1qhLbL+T1+DNigo648bNcc66OoyuZkscWUURatOQ2z/Dm l9FbFDzdhHYTMIJiUYfDRLpFS+EymIpQfZHbPmPGm/9apz9AVd8N'
+        }
+    }
     compileSdk "$target_sdk".toInteger()
 
     defaultConfig {

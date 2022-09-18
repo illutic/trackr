@@ -1,4 +1,5 @@
 package g.sig.core_ui.theme
+
 import androidx.compose.ui.graphics.Color
 
 val light_primary = Color(0xFF006C4B)

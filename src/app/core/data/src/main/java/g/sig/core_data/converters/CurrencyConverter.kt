@@ -9,6 +9,6 @@ class CurrencyConverter {
         currency?.currencyCode
 
     @TypeConverter
-    fun fromStringToCurrency(currencyCode: String?) : Currency? =
+    fun fromStringToCurrency(currencyCode: String?): Currency? =
         Currency.getInstance(currencyCode)
 }

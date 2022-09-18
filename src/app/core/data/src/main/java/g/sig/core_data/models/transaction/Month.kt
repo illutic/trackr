@@ -5,7 +5,7 @@ import java.time.Instant
 
 @Entity
 data class Month(
-    @PrimaryKey(autoGenerate = true) val monthId: Int,
+    @PrimaryKey(autoGenerate = true) val monthId: Long,
     val budget: Double = 0.0,
     val expenses: Double = 0.0,
     val date: Instant
@@ -13,8 +13,8 @@ data class Month(
 
 @Entity(primaryKeys = ["monthId", "categoryId"])
 data class MonthCategoriesCrossRef(
-    val monthId: Int,
-    val categoryId: Int
+    val monthId: Long,
+    val categoryId: Long
 )
 
 data class MonthCategories(

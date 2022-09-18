@@ -4,7 +4,7 @@ import g.sig.core_ui.*
 import g.sig.core_ui.R
 
 sealed interface TopLevelRoute : Navigable {
-    val titleRes: Int
+    val titleRes: Long
     val selectedIcon: AppIcon
     val unselectedIcon: AppIcon
 

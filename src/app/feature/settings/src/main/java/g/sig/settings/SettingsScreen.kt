@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,24 +21,31 @@ import g.sig.core_ui.R
 import g.sig.core_ui.menus.OutlinedCurrencyDropDown
 import g.sig.core_ui.surfaces.GradientLogo
 import g.sig.core_ui.surfaces.PrimarySwitchSurface
+import java.util.*
 
 @Composable
 fun SettingsRoute() {
     val viewModel: SettingsViewModel = viewModel()
-    val state by viewModel.settingsState.collectAsState()
+    val currency = viewModel.savedCurrency.collectAsState().value
+
     SettingsScreen(
-        state,
+        currencies = viewModel.getCurrencies().map { it.currencyCode },
+        selectedCurrency = currency,
+        isMaterialYou = viewModel.materialYou,
         onMaterialYouToggled = viewModel::toggleMaterialYou,
-        onCurrencySelected = viewModel::setUserCurrency
+        onCurrencySelected = { viewModel.setCurrency(Currency.getInstance(it)) }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Preview
 fun SettingsScreen(
-    settingsState: SettingsState,
-    onMaterialYouToggled: (Boolean) -> Unit,
-    onCurrencySelected: (Currency) -> Unit
+    currencies: List<String> = listOf(),
+    isMaterialYou: Boolean = false,
+    selectedCurrency: Currency = Currency.getInstance(Locale.getDefault()),
+    onMaterialYouToggled: (Boolean) -> Unit = {},
+    onCurrencySelected: (String) -> Unit = {}
 ) {
     Scaffold(topBar = { NoNavIconAppBar(stringResource(R.string.settings)) }) {
         Column(
@@ -47,42 +53,33 @@ fun SettingsScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            when (settingsState) {
-                is SettingsState.SettingsLoading -> {
-                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                }
-                is SettingsState.SettingsSuccess -> {
-                    GradientLogo(
-                        materialYou = settingsState.isMaterialYouEnabled,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                    )
+            GradientLogo(
+                materialYou = isMaterialYou,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            )
 
-                    OutlinedCurrencyDropDown(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        label = settingsState.userSettings.currency.currencyCode,
-                        items = settingsState.currencies,
-                        onItemSelected = onCurrencySelected
-                    )
+            OutlinedCurrencyDropDown(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                label = stringResource(id = R.string.currency),
+                selectedItem = selectedCurrency.currencyCode,
+                items = currencies,
+                onItemSelected = onCurrencySelected
+            )
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                        PrimarySwitchSurface(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                            selected = settingsState.isMaterialYouEnabled,
-                            title = stringResource(R.string.material_you_title),
-                            message = stringResource(R.string.material_you_message),
-                            onChanged = onMaterialYouToggled
-                        )
-                }
-                is SettingsState.SettingsError -> {
-
-                }
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                PrimarySwitchSurface(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    selected = isMaterialYou,
+                    title = stringResource(R.string.material_you_title),
+                    message = stringResource(R.string.material_you_message),
+                    onChanged = onMaterialYouToggled
+                )
         }
     }
 }

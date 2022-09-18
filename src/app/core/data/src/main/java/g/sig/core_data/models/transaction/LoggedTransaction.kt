@@ -6,9 +6,9 @@ import java.time.Instant
 
 @Entity
 data class LoggedTransaction(
-    @PrimaryKey(autoGenerate = true) val transactionId: Int,
+    @PrimaryKey(autoGenerate = true) val transactionId: Long,
     val amount: Double = 0.0,
     val createdAt: Instant,
     val description: String? = null,
-    val categoryId: Int? = null
+    val categoryId: Long? = null
 )

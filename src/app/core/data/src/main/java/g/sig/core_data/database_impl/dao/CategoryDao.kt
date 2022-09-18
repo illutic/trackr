@@ -13,13 +13,13 @@ interface CategoryDao {
     suspend fun getCategories(): List<Category>?
 
     @Query("SELECT * FROM Category WHERE categoryId == :categoryId")
-    suspend fun getCategory(categoryId: Int): Category?
+    suspend fun getCategory(categoryId: Long): Category?
 
     @Delete
     suspend fun deleteCategory(category: Category): Int?
 
     @Transaction
     @Query("SELECT * FROM Category WHERE categoryId == :categoryId")
-    suspend fun getCategoryTransactions(categoryId: Int): CategoryTransactions?
+    suspend fun getCategoryTransactions(categoryId: Long): CategoryTransactions?
 
 }

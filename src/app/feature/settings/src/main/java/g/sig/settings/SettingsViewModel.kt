@@ -7,56 +7,24 @@ import android.icu.util.Currency
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import g.sig.core_data.Response
-import g.sig.core_data.models.user.UserSettings
-import g.sig.core_data.repositories.UserRepo
-import g.sig.core_data.shared_prefs.SharedKeys
-import g.sig.core_data.shared_prefs.setPreferences
-import g.sig.core_data.shared_prefs.sharedPrefs
+import g.sig.core_data.shared_prefs.isMaterialYou
+import g.sig.core_data.shared_prefs.savedCurrencyCode
+import g.sig.core_data.utils.stateFlow
 import g.sig.core_navigation.DeepLinkUri
+import g.sig.core_navigation.Routes
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.asStateFlow
 
 class SettingsViewModel(app: Application) : AndroidViewModel(app) {
     private val applicationContext: Application get() = getApplication()
-    private val userRepo: UserRepo = UserRepo(applicationContext)
+    private val _savedCurrency =
+        MutableStateFlow(Currency.getInstance(applicationContext.savedCurrencyCode))
+    val savedCurrency = _savedCurrency.stateFlow
 
-    private val _settingsState = MutableStateFlow<SettingsState>(SettingsState.SettingsLoading)
-    val settingsState: StateFlow<SettingsState> = _settingsState
-    private val materialYou
-        get() = applicationContext.sharedPrefs().getBoolean(SharedKeys.MaterialYou, false)
-    private val userId
-        get() = applicationContext.sharedPrefs().getInt(SharedKeys.UserId, SharedKeys.NoUserId)
-
-    init {
-        viewModelScope.launch {
-            userRepo.getCurrencies()
-                .combine(userRepo.getUserSettings(userId)) { currencyResponse: Response<List<Currency>>, userSettingsResponse: Response<UserSettings> ->
-                    if (currencyResponse is Response.Success && userSettingsResponse is Response.Success) {
-                        SettingsState.SettingsSuccess(
-                            isMaterialYouEnabled = materialYou,
-                            currencies = currencyResponse.data,
-                            userSettings = userSettingsResponse.data
-                        )
-                    } else if (currencyResponse is Response.Error) {
-                        SettingsState.SettingsError(currencyResponse.errorMessage ?: "")
-                    } else if (userSettingsResponse is Response.Error) {
-                        SettingsState.SettingsError(userSettingsResponse.errorMessage ?: "")
-                    } else {
-                        SettingsState.SettingsLoading
-                    }
-                }.collectLatest {
-                    _settingsState.value = it
-                }
-        }
-    }
+    val materialYou get() = applicationContext.isMaterialYou
 
     fun toggleMaterialYou(toggle: Boolean) {
-        applicationContext.setPreferences(SharedKeys.MaterialYou, toggle)
+        applicationContext.isMaterialYou = toggle
 
         // Restart App and add a deep link to settings
         val packageManager = applicationContext.packageManager
@@ -64,7 +32,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
         val componentName = intent?.component
         val restartIntent =
             Intent.makeRestartActivityTask(componentName).apply {
-                data = "$DeepLinkUri/settings".toUri()
+                data = "$DeepLinkUri/${Routes.Settings.deepLink}".toUri()
             }
 
         val deepLinkPendingIntent =
@@ -76,7 +44,10 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
         deepLinkPendingIntent?.send()
     }
 
-    fun setUserCurrency(currency: Currency) {
+    fun getCurrencies() = Currency.getAvailableCurrencies().sortedBy { it.currencyCode }
 
+    fun setCurrency(currency: Currency) {
+        applicationContext.savedCurrencyCode = currency.currencyCode
+        _savedCurrency.value = currency
     }
 }

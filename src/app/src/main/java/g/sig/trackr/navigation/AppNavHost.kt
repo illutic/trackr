@@ -22,8 +22,14 @@ fun AppNavHost(
         modifier = modifier,
         startDestination = startDestination
     ) {
-        overviewGraph(listOf(navDeepLink { uriPattern = "$DeepLinkUri/overview" }))
-        transactionsGraph(listOf(navDeepLink { uriPattern = "$DeepLinkUri/transactions" }))
-        settingsGraph(listOf(navDeepLink { uriPattern = "$DeepLinkUri/settings" }))
+        overviewGraph(listOf(navDeepLink {
+            uriPattern = "$DeepLinkUri/${Routes.Overview.deepLink}"
+        }))
+        transactionsGraph(listOf(navDeepLink {
+            uriPattern = "$DeepLinkUri/${Routes.Transactions.deepLink}"
+        }))
+        settingsGraph(listOf(navDeepLink {
+            uriPattern = "$DeepLinkUri/${Routes.Settings.deepLink}"
+        }))
     }
 }
