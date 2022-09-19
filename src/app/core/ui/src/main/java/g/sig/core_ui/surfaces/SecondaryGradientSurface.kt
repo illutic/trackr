@@ -10,19 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
-import g.sig.core_ui.icons.TrackRLogo
 import g.sig.core_ui.theme.shape16
 
 @Composable
 @Preview
-fun PrimaryGradientRow(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {
+fun SecondaryGradientRow(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {
     Row(
         modifier = modifier
             .background(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
-                        MaterialTheme.colorScheme.primaryContainer,
-                        MaterialTheme.colorScheme.secondaryContainer
+                        MaterialTheme.colorScheme.secondaryContainer,
+                        MaterialTheme.colorScheme.tertiaryContainer
                     )
                 ),
                 shape = shape16
@@ -36,14 +35,14 @@ fun PrimaryGradientRow(modifier: Modifier = Modifier, content: @Composable () ->
 
 @Composable
 @Preview
-fun PrimaryGradientColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {
+fun SecondaryGradientColumn(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {
     Column(
         modifier = modifier
             .background(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
-                        MaterialTheme.colorScheme.primaryContainer,
-                        MaterialTheme.colorScheme.secondaryContainer
+                        MaterialTheme.colorScheme.secondaryContainer,
+                        MaterialTheme.colorScheme.tertiaryContainer
                     )
                 ),
                 shape = shape16
@@ -52,26 +51,5 @@ fun PrimaryGradientColumn(modifier: Modifier = Modifier, content: @Composable ()
         horizontalAlignment = Alignment.Start
     ) {
         content()
-    }
-}
-
-@Composable
-@Preview
-fun GradientLogo(modifier: Modifier = Modifier, materialYou: Boolean = false) {
-    Row(
-        modifier = modifier
-            .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.primaryContainer,
-                        MaterialTheme.colorScheme.secondary
-                    )
-                ),
-                shape = shape16
-            ),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        TrackRLogo(isMaterialYou = materialYou)
     }
 }

@@ -7,9 +7,34 @@ import g.sig.core_data.models.transaction.Month
 import g.sig.core_data.models.transaction.MonthCategories
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.YearMonth
+import java.time.temporal.ChronoField
+import java.time.temporal.IsoFields
+import java.time.temporal.Temporal
+import java.time.temporal.TemporalField
+import java.time.temporal.TemporalQueries
+import java.util.*
 
 class MonthRepo(context: Context) {
     private val monthDao = Singletons.getDatabase(context).monthDao()
+
+    suspend fun getMonth(monthId: Long): Flow<Response<MonthCategories>> =
+        channelFlow {
+            send(Response.Loading)
+            val month = monthDao.getMonth(monthId)
+            send(Response.Success(month))
+        }
+
+    suspend fun getMonth(date: LocalDateTime): Flow<Response<MonthCategories>> =
+        channelFlow {
+            send(Response.Loading)
+            val monthDate: Int = date.month.value
+            val year: Int = date.year
+            val month = monthDao.getMonthByDate(monthDate, year)
+            send(Response.Success(month))
+        }
 
     suspend fun setMonth(month: Month): Flow<Response<Boolean>> =
         channelFlow {
@@ -28,12 +53,6 @@ class MonthRepo(context: Context) {
         channelFlow {
             send(Response.Loading)
             send(Response.Success(monthDao.getExpenses(monthId)))
-        }
-
-    suspend fun getCategories(monthId: Long): Flow<Response<MonthCategories>> =
-        channelFlow {
-            send(Response.Loading)
-            send(Response.Success(monthDao.getCategories(monthId)))
         }
 
 }

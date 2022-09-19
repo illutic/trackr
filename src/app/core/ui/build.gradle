@@ -37,6 +37,9 @@ android {
 dependencies {
     project(":app:core:data")
 
+    // Jank Stats
+    api 'androidx.metrics:metrics-performance:1.0.0-alpha03'
+
     // compose & material
     api "androidx.core:core-ktx:$android_core_version"
     api "androidx.activity:activity-compose:$activity_compose_version"

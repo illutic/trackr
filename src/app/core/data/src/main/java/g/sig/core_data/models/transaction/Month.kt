@@ -8,7 +8,8 @@ data class Month(
     @PrimaryKey(autoGenerate = true) val monthId: Long,
     val budget: Double = 0.0,
     val expenses: Double = 0.0,
-    val date: Instant
+    val month: Int,
+    val year: Int
 )
 
 @Entity(primaryKeys = ["monthId", "categoryId"])
