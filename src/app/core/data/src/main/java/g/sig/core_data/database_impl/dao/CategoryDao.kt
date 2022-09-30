@@ -16,7 +16,7 @@ interface CategoryDao {
     suspend fun getCategory(categoryId: Long): Category?
 
     @Delete
-    suspend fun deleteCategory(category: Category): Int?
+    suspend fun deleteCategory(category: Category?): Int?
 
     @Transaction
     @Query("SELECT * FROM Category WHERE categoryId == :categoryId")

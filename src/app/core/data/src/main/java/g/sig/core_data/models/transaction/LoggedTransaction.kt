@@ -9,6 +9,5 @@ data class LoggedTransaction(
     @PrimaryKey(autoGenerate = true) val transactionId: Long,
     val amount: Double = 0.0,
     val createdAt: Instant,
-    val description: String? = null,
-    val categoryId: Long? = null
+    val description: String? = null
 )

@@ -40,4 +40,5 @@ dependencies {
     implementation project(":app:core:navigation")
     implementation project(":app:core:ui")
     implementation project(":app:core:data")
+    implementation project(path: ':app:core:constants')
 }

@@ -5,6 +5,8 @@ import android.icu.util.Currency
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import g.sig.core_data.Response
+import g.sig.core_data.models.transaction.Month
+import g.sig.core_data.models.transaction.MonthCategories
 import g.sig.core_data.repositories.MonthRepo
 import g.sig.core_data.shared_prefs.savedCurrencyCode
 import g.sig.core_data.utils.stateFlow
@@ -12,8 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 class OverviewViewModel(app: Application) : AndroidViewModel(app) {
     private val applicationContext: Application get() = getApplication()
@@ -27,17 +28,39 @@ class OverviewViewModel(app: Application) : AndroidViewModel(app) {
     val savedCurrency = _savedCurrency.stateFlow
 
     init {
-        changeMonth()
+        changeMonth(LocalDate.now())
     }
 
-    fun changeMonth() {
+    fun changeMonth(date: LocalDate) {
         _overviewStateFlow.value = OverviewState.OverviewLoading
         viewModelScope.launch {
-            monthRepo.getMonth(LocalDateTime.now()).collectLatest {
-                _overviewStateFlow.value = when (it) {
-                    is Response.Error -> OverviewState.OverviewError(it.errorMessage ?: "")
-                    Response.Loading -> OverviewState.OverviewLoading
-                    is Response.Success -> OverviewState.OverviewSuccess(it.data)
+            monthRepo.getMonth(date).collectLatest { monthCategoriesResponse ->
+                when (monthCategoriesResponse) {
+                    is Response.Error -> _overviewStateFlow.value =
+                        OverviewState.OverviewError(monthCategoriesResponse.errorMessage ?: "")
+                    Response.Loading -> _overviewStateFlow.value = OverviewState.OverviewLoading
+                    is Response.Success -> if (monthCategoriesResponse.data == null) {
+                        val month = Month(month = date.monthValue, year = date.year)
+                        _overviewStateFlow.value = OverviewState.OverviewLoading
+
+                        // A month doesn't exist, go create a new one and send it back if it's successful
+                        monthRepo.setMonth(month).collectLatest {
+                            _overviewStateFlow.value = when (it) {
+                                is Response.Error -> OverviewState.OverviewError(
+                                    it.errorMessage ?: ""
+                                )
+                                Response.Loading -> OverviewState.OverviewLoading
+                                is Response.Success -> OverviewState.OverviewSuccess(
+                                    MonthCategories(
+                                        month,
+                                        categories = listOf()
+                                    )
+                                )
+                            }
+                        }
+                    } else {
+                        OverviewState.OverviewSuccess(monthCategoriesResponse.data)
+                    }
                 }
             }
         }

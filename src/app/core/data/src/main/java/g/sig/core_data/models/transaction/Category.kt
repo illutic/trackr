@@ -1,9 +1,6 @@
 package g.sig.core_data.models.transaction
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.Relation
+import androidx.room.*
 
 @Entity
 data class Category(
@@ -11,11 +8,39 @@ data class Category(
     val name: String
 )
 
+@Entity(
+    primaryKeys = ["categoryId", "transactionId"],
+    foreignKeys = [
+        ForeignKey(
+            entity = Category::class,
+            parentColumns = ["categoryId"],
+            childColumns = ["categoryId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = LoggedTransaction::class,
+            parentColumns = ["transactionId"],
+            childColumns = ["transactionId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+    ]
+)
+data class CategoryTransactionsCrossRef(
+    @ColumnInfo(index = true)
+    val categoryId: Long,
+    @ColumnInfo(index = true)
+    val transactionId: Long
+)
+
 data class CategoryTransactions(
     @Embedded val category: Category,
     @Relation(
+        entity = LoggedTransaction::class,
         parentColumn = "categoryId",
-        entityColumn = "categoryId",
+        entityColumn = "transactionId",
+        associateBy = Junction(CategoryTransactionsCrossRef::class)
     )
     val loggedTransactions: List<LoggedTransaction>
 )

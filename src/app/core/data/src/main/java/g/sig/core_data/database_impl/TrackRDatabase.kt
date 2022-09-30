@@ -10,10 +10,7 @@ import g.sig.core_data.converters.DateConverter
 import g.sig.core_data.database_impl.dao.CategoryDao
 import g.sig.core_data.database_impl.dao.MonthDao
 import g.sig.core_data.database_impl.dao.TransactionsDao
-import g.sig.core_data.models.transaction.Category
-import g.sig.core_data.models.transaction.LoggedTransaction
-import g.sig.core_data.models.transaction.Month
-import g.sig.core_data.models.transaction.MonthCategoriesCrossRef
+import g.sig.core_data.models.transaction.*
 
 @Database(
     entities = [
@@ -21,7 +18,9 @@ import g.sig.core_data.models.transaction.MonthCategoriesCrossRef
         Month::class,
         MonthCategoriesCrossRef::class,
         LoggedTransaction::class,
+        CategoryTransactionsCrossRef::class
     ],
+    exportSchema = false,
     version = 1
 )
 @TypeConverters(DateConverter::class, CurrencyConverter::class)

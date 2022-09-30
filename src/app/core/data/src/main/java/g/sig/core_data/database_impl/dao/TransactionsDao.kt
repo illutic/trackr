@@ -13,6 +13,6 @@ interface TransactionsDao {
     suspend fun setTransaction(loggedTransaction: LoggedTransaction)
 
     @Delete
-    suspend fun deleteTransaction(loggedTransaction: LoggedTransaction): Int?
+    suspend fun deleteTransaction(loggedTransaction: LoggedTransaction?): Int?
 
 }

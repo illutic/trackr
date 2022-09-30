@@ -6,8 +6,10 @@ import g.sig.core_data.Singletons
 import g.sig.core_data.models.transaction.Month
 import g.sig.core_data.models.transaction.MonthCategories
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
 import java.time.temporal.ChronoField
@@ -27,7 +29,7 @@ class MonthRepo(context: Context) {
             send(Response.Success(month))
         }
 
-    suspend fun getMonth(date: LocalDateTime): Flow<Response<MonthCategories>> =
+    suspend fun getMonth(date: LocalDate): Flow<Response<MonthCategories>> =
         channelFlow {
             send(Response.Loading)
             val monthDate: Int = date.month.value
