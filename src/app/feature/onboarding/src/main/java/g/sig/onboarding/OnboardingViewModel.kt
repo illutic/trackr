@@ -10,7 +10,9 @@ import g.sig.core_data.models.user.UserSettings
 import g.sig.core_data.repositories.UserRepo
 import g.sig.core_data.shared_prefs.SharedKeys
 import g.sig.core_data.shared_prefs.setPreferences
-import g.sig.core_data.utils.stateFlow
+import g.sig.core_data.utils.asStateFlow
+
+()
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -20,7 +22,7 @@ class OnboardingViewModel(app: Application) : AndroidViewModel(app) {
     private val userRepo = UserRepo(getApplication())
     private val _onboardingStateFlow =
         MutableStateFlow<OnboardingState>(OnboardingState.OnboardingIdle)
-    val onboardingStateFlow = _onboardingStateFlow.stateFlow
+    val onboardingStateFlow = _onboardingStateFlow.asStateFlow()
 
     fun registerUser() = viewModelScope.launch {
         userRepo.setUser(User()).collectLatest {

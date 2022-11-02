@@ -5,6 +5,7 @@ import g.sig.core_data.Response
 import g.sig.core_data.Singletons
 import g.sig.core_data.models.transaction.Category
 import g.sig.core_data.models.transaction.CategoryTransactions
+import g.sig.core_data.models.transaction.MonthCategoriesCrossRef
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -30,6 +31,17 @@ class CategoryRepo(context: Context) {
             send(Response.Loading)
             val category = categoryDao.getCategory(categoryId)
             if (category == null) send(Response.Error("")) else send(Response.Success(category))
+        }
+
+    suspend fun setCategoryMonthRelation(categoryId: Long?, monthId: Long?): Flow<Response<Boolean>> =
+        channelFlow {
+            send(Response.Loading)
+            if (categoryId != null && monthId != null) {
+                categoryDao.setCategoryMonthRelation(
+                    MonthCategoriesCrossRef(monthId, categoryId)
+                )
+            }
+            send(Response.Success(true))
         }
 
     suspend fun getCategoryTransactions(categoryId: Long): Flow<Response<CategoryTransactions>> =

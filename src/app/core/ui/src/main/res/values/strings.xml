@@ -6,7 +6,6 @@
     <!--Overview-->
     <string name="budget">Budget</string>
     <string name="expenses">Expenses</string>
-    <string name="add_expense">Add Expense</string>
     <string name="no_transactions">Hmm, it looks kind of empty, start by logging some transactions.</string>
 
     <!--Settings-->
@@ -19,7 +18,15 @@
     <string name="choose_a_month">Choose a month</string>
     <string name="choose_a_year">Choose a year</string>
 
+    <!--Bottom sheets-->
+    <string name="add_expense">Add expense</string>
+    <string name="add_category">Add category</string>
+    <string name="add_a_name">Add a name</string>
+    <string name="created_on">Created on</string>
+
     <!--General-->
     <string name="confirm">Confirm</string>
     <string name="dismiss">Dismiss</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

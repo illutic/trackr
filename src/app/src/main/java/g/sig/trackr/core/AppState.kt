@@ -1,10 +1,12 @@
 package g.sig.trackr.core
 
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.metrics.performance.JankStats
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
@@ -14,6 +16,7 @@ import g.sig.core_data.shared_prefs.isMaterialYou
 import g.sig.core_navigation.Navigable
 import g.sig.core_navigation.TopLevelRoute
 import g.sig.core_ui.utils.JankMetricDisposableEffect
+import java.time.LocalDate
 
 @Composable
 fun rememberAppState(navController: NavHostController = rememberNavController()): AppState {
@@ -25,6 +28,12 @@ fun rememberAppState(navController: NavHostController = rememberNavController())
 class AppState(
     val navController: NavHostController
 ) {
+    var currentMonth: LocalDate = LocalDate.now()
+    @OptIn(ExperimentalMaterialApi::class)
+    val addExpenseModalBottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
+
+    @OptIn(ExperimentalMaterialApi::class)
+    val addCategoryModalBottomSheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val useMaterialYou: Boolean
         @Composable get() = LocalContext.current.isMaterialYou
     val currentDestination: NavDestination?

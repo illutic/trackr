@@ -9,17 +9,17 @@ import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import g.sig.core_data.shared_prefs.isMaterialYou
 import g.sig.core_data.shared_prefs.savedCurrencyCode
-import g.sig.core_data.utils.stateFlow
 import g.sig.core_navigation.DeepLinkUri
 import g.sig.core_navigation.Routes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+
 class SettingsViewModel(app: Application) : AndroidViewModel(app) {
     private val applicationContext: Application get() = getApplication()
     private val _savedCurrency =
         MutableStateFlow(Currency.getInstance(applicationContext.savedCurrencyCode))
-    val savedCurrency = _savedCurrency.stateFlow
+    val savedCurrency = _savedCurrency.asStateFlow()
 
     val materialYou get() = applicationContext.isMaterialYou
 

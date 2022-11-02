@@ -3,6 +3,7 @@ package g.sig.feature_overview
 import android.icu.util.Currency
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
@@ -12,12 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import g.sig.constants.AppButtonType
-import g.sig.core_data.models.transaction.Month
-import g.sig.core_data.models.transaction.MonthCategories
 import g.sig.core_data.utils.*
 import g.sig.core_ui.AppIcons
 import g.sig.core_ui.NoNavIconAppBar
@@ -34,16 +32,32 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OverviewRoute() {
+fun OverviewRoute(
+    addExpenseBottomSheetState: ModalBottomSheetState,
+    onDateChange: (LocalDate) -> Unit,
+    initialMonth: LocalDate = LocalDate.now()
+) {
     val viewModel: OverviewViewModel = viewModel()
     val overviewState by viewModel.overviewStateFlow.collectAsState()
     val currency by viewModel.savedCurrency.collectAsState()
-    OverviewScreen(overviewState, currency = currency.currencyCode, viewModel::changeMonth)
+
+    LaunchedEffect(Unit) {
+        viewModel.changeMonth(initialMonth)
+    }
+
+    OverviewScreen(
+        bottomSheetState = addExpenseBottomSheetState,
+        overviewState,
+        currency = currency.currencyCode
+    ) { viewModel.changeMonth(it); onDateChange(it) }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun OverviewScreen(
+    bottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
     overviewState: OverviewState = OverviewState.OverviewLoading,
     currency: String = Currency.getInstance(Locale.getDefault()).currencyCode,
     onDateChange: (LocalDate) -> Unit = {}
@@ -52,12 +66,12 @@ fun OverviewScreen(
         is OverviewState.OverviewLoading -> {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
-        is OverviewState.OverviewSuccess ->
-            OverviewSuccessContent(
-                currency = currency,
-                overviewState = overviewState,
-                onDateChange = onDateChange
-            )
+        is OverviewState.OverviewSuccess -> OverviewSuccessContent(
+            bottomSheetState = bottomSheetState,
+            currency = currency,
+            overviewState = overviewState,
+            onDateChange = onDateChange
+        )
         is OverviewState.OverviewError -> {
 
         }
@@ -69,22 +83,16 @@ fun OverviewScreen(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun OverviewSuccessContent(
+    bottomSheetState: ModalBottomSheetState,
     currency: String,
     overviewState: OverviewState.OverviewSuccess,
     onDateChange: (LocalDate) -> Unit
 ) {
-    val bottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
-
-    AddExpenseModal(bottomSheetState) {
-        SuccessContent(
-            currency = currency,
-            overviewState = overviewState,
-            onDateChange = onDateChange,
-            onAddExpense = { coroutineScope.launch { bottomSheetState.show() } }
-        )
-    }
+    SuccessContent(currency = currency,
+        overviewState = overviewState,
+        onDateChange = onDateChange,
+        onAddExpense = { coroutineScope.launch { bottomSheetState.show() } })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,42 +108,39 @@ fun SuccessContent(
     var showYearPicker by remember { mutableStateOf(false) }
 
     if (showMonthPicker) {
-        MonthPickerDialog(
-            initialDate = overviewState.monthCategories?.month?.toLocalDate() ?: LocalDate.now(),
+        MonthPickerDialog(initialDate = overviewState.monthCategories?.month?.toLocalDate()
+            ?: LocalDate.now(),
             onMonthChanged = { onDateChange(it); showMonthPicker = false },
-            onDismiss = { showMonthPicker = false }
-        )
+            onDismiss = { showMonthPicker = false })
     }
 
     if (showYearPicker) {
-        YearPickerDialog(
-            initialDate = overviewState.monthCategories?.month?.toLocalDate() ?: LocalDate.now(),
+        YearPickerDialog(initialDate = overviewState.monthCategories?.month?.toLocalDate()
+            ?: LocalDate.now(),
             onYearChanged = { onDateChange(it); showYearPicker = false },
-            onDismiss = { showYearPicker = false }
-        )
+            onDismiss = { showYearPicker = false })
     }
 
-    Scaffold(
-        topBar = {
-            NoNavIconAppBar(stringResource(R.string.overview)) {
-                AppTonalButton(
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    text = overviewState.monthCategories?.month?.toDisplayName() ?: LocalDate.now()
-                        .toMonthDisplayName(),
-                    onClick = { showMonthPicker = true },
-                    type = AppButtonType.Primary,
-                    shape = shape24to4
-                )
-                AppTonalButton(
-                    modifier = Modifier.padding(end = 16.dp),
-                    text = overviewState.monthCategories?.month?.year?.toString() ?: LocalDate.now()
-                        .toYearDisplayName(),
-                    onClick = { showYearPicker = true },
-                    type = AppButtonType.Secondary,
-                    shape = shape4to24
-                )
-            }
-        }) {
+    Scaffold(topBar = {
+        NoNavIconAppBar(stringResource(R.string.overview)) {
+            AppTonalButton(
+                modifier = Modifier.padding(horizontal = 4.dp),
+                text = overviewState.monthCategories?.month?.toDisplayName() ?: LocalDate.now()
+                    .toMonthDisplayName(),
+                onClick = { showMonthPicker = true },
+                type = AppButtonType.Primary,
+                shape = shape24to4
+            )
+            AppTonalButton(
+                modifier = Modifier.padding(end = 16.dp),
+                text = overviewState.monthCategories?.month?.year?.toString() ?: LocalDate.now()
+                    .toYearDisplayName(),
+                onClick = { showYearPicker = true },
+                type = AppButtonType.Secondary,
+                shape = shape4to24
+            )
+        }
+    }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -185,11 +190,9 @@ fun SuccessContent(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.End
             ) {
-                ExtendedFloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                ExtendedFloatingActionButton(containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    onClick = { onAddExpense() }
-                ) {
+                    onClick = { onAddExpense() }) {
                     Icon(imageVector = AppIcons.add, contentDescription = "Add icon")
                     Text(stringResource(id = R.string.add_expense))
                 }
@@ -213,8 +216,7 @@ fun EmptyCategories() {
             contentDescription = "empty categories"
         )
         Text(
-            modifier = Modifier.padding(16.dp),
-            text = stringResource(id = R.string.no_transactions)
+            modifier = Modifier.padding(16.dp), text = stringResource(id = R.string.no_transactions)
         )
     }
 }
@@ -251,21 +253,4 @@ fun ExpensesBox(modifier: Modifier = Modifier, amount: Double?, currency: String
             color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
-}
-
-@Composable
-@Preview
-fun PreviewOverview() {
-    OverviewScreen(
-        OverviewState.OverviewSuccess(
-            MonthCategories(
-                Month(
-                    monthId = 0,
-                    month = 0,
-                    year = 0
-                ),
-                listOf()
-            )
-        )
-    )
 }

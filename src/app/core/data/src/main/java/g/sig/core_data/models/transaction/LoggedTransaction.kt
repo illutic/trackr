@@ -6,8 +6,8 @@ import java.time.Instant
 
 @Entity
 data class LoggedTransaction(
-    @PrimaryKey(autoGenerate = true) val transactionId: Long,
+    @PrimaryKey(autoGenerate = true) val transactionId: Long = 0,
     val amount: Double = 0.0,
-    val createdAt: Instant,
+    val createdAt: Instant = Instant.now(),
     val description: String? = null
 )

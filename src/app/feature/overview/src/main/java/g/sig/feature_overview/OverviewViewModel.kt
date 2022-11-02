@@ -9,9 +9,9 @@ import g.sig.core_data.models.transaction.Month
 import g.sig.core_data.models.transaction.MonthCategories
 import g.sig.core_data.repositories.MonthRepo
 import g.sig.core_data.shared_prefs.savedCurrencyCode
-import g.sig.core_data.utils.stateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -25,11 +25,7 @@ class OverviewViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _savedCurrency =
         MutableStateFlow(Currency.getInstance(applicationContext.savedCurrencyCode))
-    val savedCurrency = _savedCurrency.stateFlow
-
-    init {
-        changeMonth(LocalDate.now())
-    }
+    val savedCurrency = _savedCurrency.asStateFlow()
 
     fun changeMonth(date: LocalDate) {
         _overviewStateFlow.value = OverviewState.OverviewLoading
@@ -59,7 +55,8 @@ class OverviewViewModel(app: Application) : AndroidViewModel(app) {
                             }
                         }
                     } else {
-                        OverviewState.OverviewSuccess(monthCategoriesResponse.data)
+                        _overviewStateFlow.value =
+                            OverviewState.OverviewSuccess(monthCategoriesResponse.data)
                     }
                 }
             }

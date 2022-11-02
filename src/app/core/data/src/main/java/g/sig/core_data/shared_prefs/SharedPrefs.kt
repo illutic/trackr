@@ -41,7 +41,7 @@ var Context.isMaterialYou
     get() = Singletons.getSharedPrefs(this).getBoolean(SharedKeys.MaterialYou, false)
     set(value) = setPreferences(SharedKeys.MaterialYou, value)
 
-var Context.savedCurrencyCode : String?
+var Context.savedCurrencyCode: String?
     get() = Singletons.getSharedPrefs(this).getString(
         SharedKeys.Currency, Currency.getInstance(
             Locale.getDefault()

@@ -6,18 +6,8 @@ import g.sig.core_data.Singletons
 import g.sig.core_data.models.transaction.Month
 import g.sig.core_data.models.transaction.MonthCategories
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
-import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.YearMonth
-import java.time.temporal.ChronoField
-import java.time.temporal.IsoFields
-import java.time.temporal.Temporal
-import java.time.temporal.TemporalField
-import java.time.temporal.TemporalQueries
-import java.util.*
 
 class MonthRepo(context: Context) {
     private val monthDao = Singletons.getDatabase(context).monthDao()
@@ -35,6 +25,15 @@ class MonthRepo(context: Context) {
             val monthDate: Int = date.month.value
             val year: Int = date.year
             val month = monthDao.getMonthByDate(monthDate, year)
+            send(Response.Success(month))
+        }
+
+    suspend fun getSimpleMonth(date: LocalDate): Flow<Response<Month>> =
+        channelFlow {
+            send(Response.Loading)
+            val monthDate: Int = date.month.value
+            val year: Int = date.year
+            val month = monthDao.getSimpleMonthByDate(monthDate, year)
             send(Response.Success(month))
         }
 
